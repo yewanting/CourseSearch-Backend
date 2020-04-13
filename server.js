@@ -25,7 +25,8 @@ app.all('*', function (req, res, next) {
 
 app.post('/api/postdata',urlencodedParser,async function(req,res){
     
-    // console.log(req.body)
+
+
     
     var searchval = req.body["searchtext"]; //获取到搜索框的内容
     var curpage = req.body["curpage"];
@@ -95,6 +96,14 @@ app.post('/api/gethomegoods',urlencodedParser,async function(req,res){
         console.log("成功返回数据")
         res.end(data)
     });
+})
+
+app.get('/api/test',urlencodedParser,async function(req,res){
+
+    
+   
+        res.end("傻猪猪！")
+  
 })
 
 var server = app.listen(8081,function(){
