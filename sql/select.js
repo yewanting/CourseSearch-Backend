@@ -15,18 +15,9 @@ connection.connect();
 // "SELECT * FROM xxx WHERE xxx LIKE '%xxx%'"
 function selectsql(queryParams, curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,coursetotallabel){
 
-    //var coursesourse = util.format("%s",coursesourse);  //传进来的coursesourse是数组对象，包括外面的大括号[]，先把它转为字符串
-
-    // coursesourse = tmpcoursesourse.slice(1,tmpcoursesourse.length-1);//去掉大括号
-
-    // var tmp = ""
-    // for(var i=0;i<coursesourse.length;i++)
-    //     tmp += "'"+ coursesbi ourse[i] +"',"
-    // coursesourse   = tmp.slice(0,tmp.length-1)
 
     coursesourse = coursesourse.join("','")
     coursesourse = "'" + coursesourse + "'"
-    // console.log(coursesourse)
     
 
     var querysql = ""

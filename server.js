@@ -1,4 +1,13 @@
 var selectsql = require('./sql/select')
+var postuserinfo = require('./sql/postuserinfo')
+var getuserinfo = require('./sql/getuserinfo')
+var insertuserstar = require('./sql/insertuserstar')
+var deleteuserstar = require('./sql/deleteuserstar')
+var selectuserstar = require('./sql/selectuserstar')
+var selectplan = require('./sql/selectplan')
+var insertuserplan = require('./sql/insertuserplan')
+var updateuserplan = require('./sql/updateuserplan')
+var deleteuserplan = require('./sql/deleteuserplan')
 var express = require('express')
 
 var bodyParser = require('body-parser')
@@ -97,16 +106,76 @@ app.post('/api/gethomegoods',urlencodedParser,async function(req,res){
         res.end(data)
     });
 })
+app.post('/api/postuserinfo',urlencodedParser,async function(req,res){
 
-app.get('/api/test',urlencodedParser,async function(req,res){
+    // console.log(req.body["username"]);
+    // console.log(req.body["password"])
+    postuserinfo(req.body,IfInsert=>{
+        res.end(IfInsert);
+    });
+})
 
-    
-   
-        res.end("傻猪猪！")
-  
+
+app.post('/api/getuserinfo',urlencodedParser,async function(req,res){
+
+    // console.log(req.body["username"]);
+    // console.log(req.body["password"])
+    getuserinfo(req.body,Ifexits=>{
+        res.end(Ifexits);
+    });
+})
+
+app.post('/api/insertuserstar',urlencodedParser,async function(req,res){
+    insertuserstar(req.body,IfStar=>{
+        res.end(IfStar);
+    });
+})
+
+app.post('/api/deleteuserstar',urlencodedParser,async function(req,res){
+    deleteuserstar(req.body,IfCancelStar=>{
+        // console.log(IfCancelStar)
+        res.end(IfCancelStar);
+    });
+})
+
+app.post('/api/selectuserstar',urlencodedParser,async function(req,res){
+    selectuserstar(req.body,IfExitsStar=>{
+        // console.log(IfExitsStar)
+        res.end(IfExitsStar);
+    });
+})
+
+app.post('/api/selectplan',urlencodedParser,async function(req,res){
+    selectplan(req.body,IfExitsPlan=>{
+        // console.log(IfExitsPlan)
+        res.end(IfExitsPlan);
+    });
+})
+
+
+app.post('/api/insertuserplan',urlencodedParser,async function(req,res){
+    insertuserplan(req.body,IfInsertPlan=>{
+        // console.log(IfInsertPlan)
+        res.end(IfInsertPlan);
+    });
+})
+
+app.post('/api/updateuserplan',urlencodedParser,async function(req,res){
+    updateuserplan(req.body,IfupdatePlan=>{
+        // console.log(IfInsertPlan)
+        res.end(IfupdatePlan);
+    });
+})
+
+app.post('/api/deleteuserplan',urlencodedParser,async function(req,res){
+    deleteuserplan(req.body,IfDeletePlan=>{
+        // console.log(IfInsertPlan)
+        res.end(IfDeletePlan);
+    });
 })
 
 var server = app.listen(8081,function(){
+
     console.log("成功！")
 })
 
