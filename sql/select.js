@@ -1,19 +1,18 @@
-var mysql = require('mysql')
 var util = require('util')
+// var mysql = require('mysql')
+// var connection = mysql.createConnection({
+//     host:'localhost',
+//     user:'root',
+//     password:'515136123321jy.',
+//     port:'3306',
+//     database:'coursesearch'
+// })
 
-var connection = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'515136123321jy.',
-    port:'3306',
-    database:'coursesearch'
-})
-
-connection.connect();
+// connection.connect();
 
 //查询数据
 // "SELECT * FROM xxx WHERE xxx LIKE '%xxx%'"
-function selectsql(queryParams, curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,coursetotallabel){
+function selectsql(queryParams, curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,coursetotallabel,connection){
 
 
     coursesourse = coursesourse.join("','")
@@ -262,7 +261,7 @@ function selectsql(queryParams, curpage,pagesize,coursesourse,isFree,isSort,minp
         })
     }
     
-
+    connection.release()
 }
 module.exports = selectsql
 

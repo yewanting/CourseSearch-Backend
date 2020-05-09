@@ -9,10 +9,17 @@ var insertuserplan = require('./sql/insertuserplan')
 var updateuserplan = require('./sql/updateuserplan')
 var deleteuserplan = require('./sql/deleteuserplan')
 var express = require('express')
-
+var mysql = require('mysql');
 var bodyParser = require('body-parser')
 var app = express();
 
+var pool = mysql.createPool({
+        host:'localhost',
+        user:'root',
+        password:'515136123321jy.',
+        port:'3306',
+        database:'coursesearch'
+})
 
 app.use(bodyParser.json());   //解析JSON数据
 //创建 application/x-www-form-urlencoded 编码解析
@@ -33,10 +40,7 @@ app.all('*', function (req, res, next) {
 
 
 app.post('/api/postdata',urlencodedParser,async function(req,res){
-    
-
-
-    
+ 
     var searchval = req.body["searchtext"]; //获取到搜索框的内容
     var curpage = req.body["curpage"];
     var pagesize = req.body["pagesize"];
@@ -45,16 +49,21 @@ app.post('/api/postdata',urlencodedParser,async function(req,res){
     var isSort = req.body["isSort"];
     var minprice = req.body["minprice"];
     var maxprice = req.body["maxprice"]
-    var objselect = new selectsql(searchval,curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,null);
-    // objselect.getjson 获得搜索的全部课程,select.js里面的函数
-    objselect.getjson(function(err,data){
-        res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//让中文正常显示
-        // console.log(data);
-        console.log("成功返回对象")
-        res.end(JSON.stringify(data));
-
-        
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err;
+        var objselect = new selectsql(searchval,curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,null,connection);
+        // objselect.getjson 获得搜索的全部课程,select.js里面的函数
+        objselect.getjson(function(err,data){
+            res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//让中文正常显示
+            // console.log(data);
+            console.log("成功返回对象")
+            res.end(JSON.stringify(data));
+    
+            
+        })
     })
+
 
 
 
@@ -76,15 +85,20 @@ app.post('/api/getcount',urlencodedParser,async function(req,res){
     var isSort = req.body["isSort"];
     var minprice = req.body["minprice"];
     var maxprice = req.body["maxprice"]
+    
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        var objselect = new selectsql(searchval,curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,null,connection);
+        // objselect.getcount 获得搜索的全部课程数量,select.js里面的函数
+    
+        // 获得搜索课程的总数；
+        objselect.getcount(function(err,data){
+            console.log("成功返回数据")
+            res.end(data)
+        });
+    })
 
-    var objselect = new selectsql(searchval,curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,null);
-    // objselect.getcount 获得搜索的全部课程数量,select.js里面的函数
-
-    // 获得搜索课程的总数；
-    objselect.getcount(function(err,data){
-        console.log("成功返回数据")
-        res.end(data)
-    });
 })
 app.post('/api/gethomegoods',urlencodedParser,async function(req,res){
 
@@ -97,22 +111,33 @@ app.post('/api/gethomegoods',urlencodedParser,async function(req,res){
     var minprice = req.body["minprice"];
     var maxprice = req.body["maxprice"];
     var coursetotallabel = req.body["coursetotallabel"]
-    var objselect = new selectsql(searchval,curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,coursetotallabel);
-    // objselect.getcount 获得搜索的全部课程数量,select.js里面的函数
 
-    // 获得搜索课程的总数；
-    objselect.getdiscoverygoods(function(err,data){
-        console.log("成功返回数据")
-        res.end(data)
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+
+        var objselect = new selectsql(searchval,curpage,pagesize,coursesourse,isFree,isSort,minprice,maxprice,coursetotallabel,connection);
+        // objselect.getcount 获得搜索的全部课程数量,select.js里面的函数
+        // 获得搜索课程的总数；
+        objselect.getdiscoverygoods(function(err,data){
+            console.log("成功返回数据")
+            res.end(data)
+        });
+    })
+
 })
 app.post('/api/postuserinfo',urlencodedParser,async function(req,res){
 
     // console.log(req.body["username"]);
     // console.log(req.body["password"])
-    postuserinfo(req.body,IfInsert=>{
-        res.end(IfInsert);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        postuserinfo(req.body,connection,IfInsert=>{
+            res.end(IfInsert);
+        });
+    })
+
 })
 
 
@@ -120,58 +145,99 @@ app.post('/api/getuserinfo',urlencodedParser,async function(req,res){
 
     // console.log(req.body["username"]);
     // console.log(req.body["password"])
-    getuserinfo(req.body,Ifexits=>{
-        res.end(Ifexits);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        getuserinfo(req.body,connection,Ifexits=>{
+            res.end(Ifexits);
+        });
+    })
+
 })
 
 app.post('/api/insertuserstar',urlencodedParser,async function(req,res){
-    insertuserstar(req.body,IfStar=>{
-        res.end(IfStar);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        insertuserstar(req.body,connection,IfStar=>{
+            res.end(IfStar);
+        });
+    })
+
 })
 
 app.post('/api/deleteuserstar',urlencodedParser,async function(req,res){
-    deleteuserstar(req.body,IfCancelStar=>{
-        // console.log(IfCancelStar)
-        res.end(IfCancelStar);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        deleteuserstar(req.body,connection,IfCancelStar=>{
+            // console.log(IfCancelStar)
+            res.end(IfCancelStar);
+        });
+    })
+
 })
 
 app.post('/api/selectuserstar',urlencodedParser,async function(req,res){
-    selectuserstar(req.body,IfExitsStar=>{
-        // console.log(IfExitsStar)
-        res.end(IfExitsStar);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        selectuserstar(req.body,connection,IfExitsStar=>{
+            // console.log(IfExitsStar)
+            res.end(IfExitsStar);
+        });
+    })
+
 })
 
 app.post('/api/selectplan',urlencodedParser,async function(req,res){
-    selectplan(req.body,IfExitsPlan=>{
-        // console.log(IfExitsPlan)
-        res.end(IfExitsPlan);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err 
+        selectplan(req.body,connection,IfExitsPlan=>{
+            // console.log(IfExitsPlan)
+            res.end(IfExitsPlan);
+        });
+    })
+
 })
 
 
 app.post('/api/insertuserplan',urlencodedParser,async function(req,res){
-    insertuserplan(req.body,IfInsertPlan=>{
-        // console.log(IfInsertPlan)
-        res.end(IfInsertPlan);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        insertuserplan(req.body,connection,IfInsertPlan=>{
+            // console.log(IfInsertPlan)
+            res.end(IfInsertPlan);
+        });
+    })
+
+
 })
 
 app.post('/api/updateuserplan',urlencodedParser,async function(req,res){
-    updateuserplan(req.body,IfupdatePlan=>{
-        // console.log(IfInsertPlan)
-        res.end(IfupdatePlan);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        updateuserplan(req.body,connection,IfupdatePlan=>{
+            // console.log(IfInsertPlan)
+            res.end(IfupdatePlan);
+        });
+    })
+
 })
 
 app.post('/api/deleteuserplan',urlencodedParser,async function(req,res){
-    deleteuserplan(req.body,IfDeletePlan=>{
-        // console.log(IfInsertPlan)
-        res.end(IfDeletePlan);
-    });
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        deleteuserplan(req.body,connection,IfDeletePlan=>{
+            // console.log(IfInsertPlan)
+            res.end(IfDeletePlan);
+        });
+    })
+
 })
 
 var server = app.listen(8081,function(){

@@ -1,18 +1,18 @@
-var mysql = require('mysql')
+// var mysql = require('mysql')
 
 
 
-var connection = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'515136123321jy.',
-    port:'3306',
-    database:'coursesearch'
-})
+// var connection = mysql.createConnection({
+//     host:'localhost',
+//     user:'root',
+//     password:'515136123321jy.',
+//     port:'3306',
+//     database:'coursesearch'
+// })
 
-connection.connect();
+// connection.connect();
 
-function insertuserplan(info,callback){
+function insertuserplan(info,connection,callback){
 
     var token = info["token"];
     var querysql = 'select username from user_info where token='+"'"+token+"'";
@@ -52,7 +52,7 @@ function insertuserplan(info,callback){
     })
 
     
- 
+    connection.release()
 
 
 }

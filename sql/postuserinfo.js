@@ -1,18 +1,18 @@
-var mysql = require('mysql')
-var util = require('util')
-var UUID = require('uuid')
+// var mysql = require('mysql')
+// var util = require('util')
+// var UUID = require('uuid')
 
-var connection = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'515136123321jy.',
-    port:'3306',
-    database:'coursesearch'
-})
+// var connection = mysql.createConnection({
+//     host:'localhost',
+//     user:'root',
+//     password:'515136123321jy.',
+//     port:'3306',
+//     database:'coursesearch'
+// })
 
-connection.connect();
+// connection.connect();
 
-function insertuserinfo(userinfo,callback){
+function insertuserinfo(userinfo,connection,callback){
 
     var uuid = UUID.v1()
     var addsql = 'INSERT INTO user_info(username,password,token)VALUES(?,?,?)';

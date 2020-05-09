@@ -1,18 +1,18 @@
-var mysql = require('mysql')
+// var mysql = require('mysql')
 
 
 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '515136123321jy.',
-    port: '3306',
-    database: 'coursesearch'
-})
+// var connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '515136123321jy.',
+//     port: '3306',
+//     database: 'coursesearch'
+// })
 
-connection.connect();
+// connection.connect();
 
-function selectuserstar(info, callback) {
+function selectuserstar(info,connection, callback) {
 
 
     var token = info["token"]
@@ -56,7 +56,7 @@ function selectuserstar(info, callback) {
 
 
 
-
+    connection.release()
 
 }
 
