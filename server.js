@@ -8,6 +8,12 @@ var selectplan = require('./sql/selectplan')
 var insertuserplan = require('./sql/insertuserplan')
 var updateuserplan = require('./sql/updateuserplan')
 var deleteuserplan = require('./sql/deleteuserplan')
+var getuserluntanname = require('./sql/getuserluntanname')
+var postuserluntanname = require('./sql/postuserluntanname')
+var postluntancontent = require('./sql/postluntancontent')
+var getluntancontent = require('./sql/getluntancontent')
+var getluntanpagerscount = require('./sql/getluntanpagerscount.js')
+var deleteluntan = require('./sql/deleteluntan')
 var express = require('express')
 var mysql = require('mysql');
 var bodyParser = require('body-parser')
@@ -239,6 +245,83 @@ app.post('/api/deleteuserplan',urlencodedParser,async function(req,res){
     })
 
 })
+
+app.post('/api/getuserluntanname',urlencodedParser,async function(req,res){
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        getuserluntanname(req.body,connection,IfGetName=>{
+            // console.log(IfGetName)
+            res.end(IfGetName);
+        });
+    })
+
+})
+
+app.post('/api/postuserluntanname',urlencodedParser,async function(req,res){
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        postuserluntanname(req.body,connection,IfpostName=>{
+            // console.log(IfGetName)
+            res.end(IfpostName);
+        });
+    })
+
+})
+
+app.post('/api/postluntancontent',urlencodedParser,async function(req,res){
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        postluntancontent(req.body,connection,IfpostLuntanContent=>{
+            // console.log(IfGetName)
+            res.end(IfpostLuntanContent);
+        });
+    })
+
+})
+
+app.post('/api/getluntancontent',urlencodedParser,async function(req,res){
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        getluntancontent(req.body,connection,IfgetLuntanContent=>{
+            // console.log(IfGetName)
+            res.end(IfgetLuntanContent);
+        });
+    })
+
+})
+
+
+
+app.post('/api/getluntanpagerscount',urlencodedParser,async function(req,res){
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        getluntanpagerscount(req.body,connection,Ifgetpagerscount=>{
+            // console.log(IfGetName)
+            res.end(Ifgetpagerscount);
+        });
+    })
+
+})
+
+app.post('/api/deleteluntan',urlencodedParser,async function(req,res){
+    pool.getConnection(function(err,connection){
+        if(err)
+        throw err
+        deleteluntan(req.body,connection,Ifdelete=>{
+            // console.log(IfGetName)
+            res.end(Ifdelete);
+        });
+    })
+
+})
+
+
+
 
 var server = app.listen(8081,function(){
 

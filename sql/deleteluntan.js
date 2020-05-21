@@ -1,6 +1,6 @@
 
 
-function deleteuserinfo(info,connection,callback){
+function deleteluntan(info,connection,callback){
 
     var token = info["token"];
     var querysql = 'select username from user_info where token='+"'"+token+"'";
@@ -19,16 +19,18 @@ function deleteuserinfo(info,connection,callback){
                 callback("-1")
             }else
             {
-               var deletesql = 'delete from stardatatable where courseid ='+"'"+info["courseid"]+"'";
+            var username = results[0]["username"];
+               var deletesql = 'delete from user_enterluntan where username ='+"'"+username+"'";
+               console.log(deletesql);
                connection.query(deletesql,function(error,results){
                    if(error)
                    {
-                       console.log('删除失败')
+                       console.log('删除论坛失败')
                        callback("-1")
                        return
                    }
                    callback("1")
-                   console.log("成功删除一条用户的收藏记录")
+                   console.log("成功删除论坛记录")
                })
             }
         }
@@ -37,9 +39,9 @@ function deleteuserinfo(info,connection,callback){
     })
 
     
- 
-    connection.release()
+connection.release()
+
 
 }
 
-module.exports = deleteuserinfo
+module.exports = deleteluntan

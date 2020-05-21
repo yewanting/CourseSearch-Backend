@@ -1,16 +1,5 @@
-// var mysql = require('mysql')
-// var util = require('util')
-// var UUID = require('uuid')
+var UUID = require('uuid')
 
-// var connection = mysql.createConnection({
-//     host:'localhost',
-//     user:'root',
-//     password:'515136123321jy.',
-//     port:'3306',
-//     database:'coursesearch'
-// })
-
-// connection.connect();
 
 function insertuserinfo(userinfo,connection,callback){
 

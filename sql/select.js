@@ -1,14 +1,5 @@
 var util = require('util')
-// var mysql = require('mysql')
-// var connection = mysql.createConnection({
-//     host:'localhost',
-//     user:'root',
-//     password:'515136123321jy.',
-//     port:'3306',
-//     database:'coursesearch'
-// })
 
-// connection.connect();
 
 //查询数据
 // "SELECT * FROM xxx WHERE xxx LIKE '%xxx%'"

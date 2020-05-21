@@ -1,7 +1,8 @@
 
 
+function getuserluntanname(info,connection, callback) {
 
-function selectplan(info,connection, callback) {
+
     var token = info["token"]
     var querysql = 'select username from user_info where token=' + "'" + token + "'";
     connection.query(querysql, function (err, results) {
@@ -13,16 +14,23 @@ function selectplan(info,connection, callback) {
 
             if (results.length > 0) {
                 var username = results[0]["username"];
-                var curquerysql = 'select * from userplan where username=' + "'" + username + "'" ;
+                var curquerysql = 'select luntanname from user_enterluntan where username=' + "'" + username+"'";
                 connection.query(curquerysql, function (err, results) {
                     if (err) {
-                        console.log("查询计划失败");
+                        console.log(err)
+                        console.log("查询加入论坛错误");
                         callback("-1");
                         return;
 
                     } else {
-                        console.log("查询计划成功");
-                        callback(JSON.stringify(results))
+                        console.log("查询加入的论坛成功");
+                        console.log(results)
+                        var res = []
+                        for(var i = 0 ; i < results.length ; i++)
+                        {
+                            res.push(results[i]["luntanname"])
+                        }
+                        callback(JSON.stringify(res))
                     }
 
                 })
@@ -33,8 +41,12 @@ function selectplan(info,connection, callback) {
 
         }
     })
+
+
+
+
     connection.release()
 
 }
 
-module.exports = selectplan
+module.exports = getuserluntanname

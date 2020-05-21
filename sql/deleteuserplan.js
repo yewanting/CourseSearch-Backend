@@ -1,16 +1,4 @@
-// var mysql = require('mysql')
 
-
-
-// var connection = mysql.createConnection({
-//     host:'localhost',
-//     user:'root',
-//     password:'515136123321jy.',
-//     port:'3306',
-//     database:'coursesearch'
-// })
-
-// connection.connect();
 
 function deleteuserplan(info,connection,callback){
 
